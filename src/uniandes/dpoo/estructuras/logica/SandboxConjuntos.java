@@ -1,5 +1,6 @@
 package uniandes.dpoo.estructuras.logica;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.NavigableSet;
@@ -16,7 +17,7 @@ import java.util.TreeSet;
  * 
  * No pueden agregarse nuevos atributos.
  */
-public class SandboxConjuntos
+public class SandboxConjuntos 
 {
     /**
      * Un conjunto (set) de cadenas para realizar varias de las siguientes operaciones.
@@ -28,27 +29,29 @@ public class SandboxConjuntos
     /**
      * Crea una nueva instancia de la clase con las dos listas inicializadas pero vacías
      */
-    public SandboxConjuntos( )
+    public SandboxConjuntos() 
     {
-        arbolCadenas = new TreeSet<String>( );
+        arbolCadenas = new TreeSet<>();
     }
 
     /**
      * Retorna una lista con las cadenas del conjunto ordenadas lexicográficamente
      * @return Una lista con las cadenas ordenadas
      */
-    public List<String> getCadenasComoLista( )
+    public List<String> getCadenasComoLista() 
     {
-        return null;
+    	List<String> cadenaComoLista = new ArrayList<>(arbolCadenas);
+        return cadenaComoLista;
     }
 
     /**
      * Retorna una lista con las cadenas del conjunto, ordenadas lexicográficamente de mayor a menor.
      * @return Una lista con las cadenas ordenadas de mayor a menor
      */
-    public List<String> getCadenasComoListaInvertida( )
+    public List<String> getCadenasComoListaInvertida() 
     {
-        return null;
+    	List<String> cadenaComoListaInvertida = new ArrayList<>(arbolCadenas.descendingSet());
+        return cadenaComoListaInvertida;
     }
 
     /**
@@ -57,9 +60,13 @@ public class SandboxConjuntos
      * Si el conjunto está vacío, debe retornar null.
      * @return La primera cadena del conjunto, o null si está vacío.
      */
-    public String getPrimera( )
+    public String getPrimera() 
     {
-        return null;
+    	if (this.arbolCadenas.isEmpty()) 
+    	{
+            return null; 
+        }
+        return this.arbolCadenas.first();
     }
 
     /**
@@ -68,9 +75,13 @@ public class SandboxConjuntos
      * Si el conjunto está vacío, debe retornar null.
      * @return La última cadena del conjunto, o null si está vacío.
      */
-    public String getUltima( )
+    public String getUltima() 
     {
-        return null;
+    	if (this.arbolCadenas.isEmpty()) 
+    	{
+            return null; 
+        }
+        return this.arbolCadenas.last();
     }
 
     /**
@@ -78,18 +89,19 @@ public class SandboxConjuntos
      * @param cadena
      * @return Una colección de cadenas mayores a la cadena dada. Si la cadena hace parte del conjunto, debe hacer parte de la colección retornada.
      */
-    public Collection<String> getSiguientes( String cadena )
+    public Collection<String> getSiguientes(String cadena) 
     {
-        return null;
+    	 Collection<String> siguientes = this.arbolCadenas.tailSet(cadena, true);
+        return siguientes;
     }
 
     /**
      * Retorna la cantidad de valores en el conjunto de cadenas
      * @return
      */
-    public int getCantidadCadenas( )
+    public int getCantidadCadenas() 
     {
-        return -1;
+        return this.arbolCadenas.size();
     }
 
     /**
@@ -99,35 +111,35 @@ public class SandboxConjuntos
      * 
      * @param cadena La cadena que se va a agregar.
      */
-    public void agregarCadena( String cadena )
+    public void agregarCadena(String cadena) 
     {
-
+        this.arbolCadenas.add(cadena);
     }
 
     /**
      * Elimina una cadena del conjunto de cadenas
      * @param cadena La cadena que se va eliminar
      */
-    public void eliminarCadena( String cadena )
+    public void eliminarCadena(String cadena) 
     {
-
+        this.arbolCadenas.remove(cadena);
     }
 
     /**
      * Elimina una cadena del conjunto de cadenas, independientemente de las mayúsculas o minúsculas
      * @param cadena La cadena que se va eliminar, sin tener en cuenta las mayúsculas o minúsculas
      */
-    public void eliminarCadenaSinMayusculasOMinusculas( String cadena )
+    public void eliminarCadenaSinMayusculasOMinusculas(String cadena) 
     {
-
+        this.arbolCadenas.removeIf(c -> c.equalsIgnoreCase(cadena));
     }
 
     /**
      * Elimina la primera cadena del conjunto
      */
-    public void eliminarPrimera( )
+    public void eliminarPrimera() 
     {
-
+        this.arbolCadenas.pollFirst();
     }
 
     /**
@@ -136,9 +148,13 @@ public class SandboxConjuntos
      * Use el método toString para convertir los objetos a cadenas.
      * @param valores Una lista de objetos
      */
-    public void reiniciarConjuntoCadenas( List<Object> objetos )
+    public void reiniciarConjuntoCadenas(List<Object> objetos) 
     {
-
+        this.arbolCadenas.clear();
+        for (Object obj : objetos) 
+        {
+            this.arbolCadenas.add(obj.toString());
+        }
     }
 
     /**
@@ -146,16 +162,24 @@ public class SandboxConjuntos
      * 
      * Note que esta operación podría modificar el órden de los elementos dentro del conjunto.
      */
-    public void volverMayusculas( )
+    public void volverMayusculas() 
     {
+        NavigableSet<String> nuevoArbol = new TreeSet<>();
+        for (String cadena : this.arbolCadenas) 
+        {
+            nuevoArbol.add(cadena.toUpperCase());
+        }
+        this.arbolCadenas.clear();
+        this.arbolCadenas.addAll(nuevoArbol);
     }
 
     /**
      * Construye un árbol de cadenas donde todas las cadenas están organizadas de MAYOR a MENOR.
      */
-    public TreeSet<String> invertirCadenas( )
+    public TreeSet<String> invertirCadenas() 
     {
-        return null;
+    	TreeSet<String> cadenaInvertida = new TreeSet<>(arbolCadenas.descendingSet());
+        return cadenaInvertida;
     }
 
     /**
@@ -163,9 +187,15 @@ public class SandboxConjuntos
      * @param otroArreglo El arreglo de enteros con el que se debe comparar
      * @return True si todos los elementos del arreglo están dentro del conjunto
      */
-    public boolean compararElementos( String[] otroArreglo )
+    public boolean compararElementos(String[] otroArreglo) 
     {
-        return false;
+        for (String cadena : otroArreglo) 
+        {
+            if (!this.arbolCadenas.contains(cadena)) 
+            {
+                return false;
+            }
+        }
+        return true;
     }
-
 }
